@@ -1,12 +1,13 @@
-package fr.gouv.culture.francetransfert.enums;
+package fr.gouv.culture.francetransfert.core.enums;
 
-import fr.gouv.culture.francetransfert.exception.StatException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import fr.gouv.culture.francetransfert.core.exception.StatException;
 
 @Getter
 @AllArgsConstructor

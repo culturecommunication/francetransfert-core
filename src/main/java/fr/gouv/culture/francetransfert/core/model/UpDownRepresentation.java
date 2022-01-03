@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.model;
+package fr.gouv.culture.francetransfert.core.model;
 
 import java.util.Set;
 

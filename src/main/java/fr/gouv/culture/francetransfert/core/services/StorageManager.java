@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.services;
+package fr.gouv.culture.francetransfert.core.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -46,8 +46,8 @@ import com.amazonaws.services.s3.model.UploadPartRequest;
 import com.amazonaws.services.s3.model.UploadPartResult;
 import com.amazonaws.util.StringUtils;
 
-import fr.gouv.culture.francetransfert.exception.StorageException;
-import fr.gouv.culture.francetransfert.utils.AmazonS3Utils;
+import fr.gouv.culture.francetransfert.core.exception.StorageException;
+import fr.gouv.culture.francetransfert.core.utils.AmazonS3Utils;
 
 
 @Service

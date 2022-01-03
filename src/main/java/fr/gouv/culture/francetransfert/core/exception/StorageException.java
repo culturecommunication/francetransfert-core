@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.exception;
+package fr.gouv.culture.francetransfert.core.exception;
 
 public class StorageException extends Exception {
 

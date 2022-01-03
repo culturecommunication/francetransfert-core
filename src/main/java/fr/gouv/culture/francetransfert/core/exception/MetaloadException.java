@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.exception;
+package fr.gouv.culture.francetransfert.core.exception;
 
 /**
  * Exception générique pendant une opération de la Metaload API.

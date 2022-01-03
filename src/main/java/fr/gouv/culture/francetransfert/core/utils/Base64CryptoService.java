@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.utils;
+package fr.gouv.culture.francetransfert.core.utils;
 
 import static com.kosprov.jargon2.api.Jargon2.jargon2Hasher;
 
@@ -44,7 +44,7 @@ import org.springframework.util.StringUtils;
 import com.kosprov.jargon2.api.Jargon2.Hasher;
 import com.kosprov.jargon2.api.Jargon2.Type;
 
-import fr.gouv.culture.francetransfert.exception.StatException;
+import fr.gouv.culture.francetransfert.core.exception.StatException;
 
 @Service
 public class Base64CryptoService {

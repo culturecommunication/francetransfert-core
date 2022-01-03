@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.utils;
+package fr.gouv.culture.francetransfert.core.utils;
 
 import java.text.MessageFormat;
 import java.time.LocalDate;
@@ -19,15 +19,15 @@ import org.redisson.client.RedisTryAgainException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import fr.gouv.culture.francetransfert.enums.EnclosureKeysEnum;
-import fr.gouv.culture.francetransfert.enums.FileKeysEnum;
-import fr.gouv.culture.francetransfert.enums.RecipientKeysEnum;
-import fr.gouv.culture.francetransfert.enums.RedisKeysEnum;
-import fr.gouv.culture.francetransfert.enums.RootDirKeysEnum;
-import fr.gouv.culture.francetransfert.enums.RootFileKeysEnum;
-import fr.gouv.culture.francetransfert.enums.SenderKeysEnum;
-import fr.gouv.culture.francetransfert.exception.MetaloadException;
-import fr.gouv.culture.francetransfert.services.RedisManager;
+import fr.gouv.culture.francetransfert.core.enums.EnclosureKeysEnum;
+import fr.gouv.culture.francetransfert.core.enums.FileKeysEnum;
+import fr.gouv.culture.francetransfert.core.enums.RecipientKeysEnum;
+import fr.gouv.culture.francetransfert.core.enums.RedisKeysEnum;
+import fr.gouv.culture.francetransfert.core.enums.RootDirKeysEnum;
+import fr.gouv.culture.francetransfert.core.enums.RootFileKeysEnum;
+import fr.gouv.culture.francetransfert.core.enums.SenderKeysEnum;
+import fr.gouv.culture.francetransfert.core.exception.MetaloadException;
+import fr.gouv.culture.francetransfert.core.services.RedisManager;
 
 public class RedisUtils {
 

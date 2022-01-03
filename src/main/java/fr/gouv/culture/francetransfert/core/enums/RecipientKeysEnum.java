@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.enums;
+package fr.gouv.culture.francetransfert.core.enums;
 
 import java.util.List;
 import java.util.stream.Collectors;

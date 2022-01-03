@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.services;
+package fr.gouv.culture.francetransfert.core.services;
 
 import java.util.HashSet;
 import java.util.List;

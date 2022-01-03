@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.services;
+package fr.gouv.culture.francetransfert.core.services;
 
 import java.io.FileInputStream;
 import java.io.IOException;

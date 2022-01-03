@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.enums;
+package fr.gouv.culture.francetransfert.core.enums;
 
 public enum RedisQueueEnum {
     MAIL_QUEUE("email-notification-queue"),

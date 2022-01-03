@@ -1,7 +1,7 @@
-package fr.gouv.culture.francetransfert.model;
+package fr.gouv.culture.francetransfert.core.model;
 import java.time.LocalDate;
 
-import fr.gouv.culture.francetransfert.enums.TypeStat;
+import fr.gouv.culture.francetransfert.core.enums.TypeStat;
 import lombok.Data;
 
 @Data

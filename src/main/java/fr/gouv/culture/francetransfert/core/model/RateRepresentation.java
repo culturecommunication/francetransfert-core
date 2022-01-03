@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.model;
+package fr.gouv.culture.francetransfert.core.model;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

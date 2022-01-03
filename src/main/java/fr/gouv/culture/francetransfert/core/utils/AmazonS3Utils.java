@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.utils;
+package fr.gouv.culture.francetransfert.core.utils;
 
 import java.util.Map;
 import java.util.stream.Collectors;

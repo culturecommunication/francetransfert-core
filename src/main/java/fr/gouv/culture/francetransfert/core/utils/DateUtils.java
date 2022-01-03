@@ -1,4 +1,4 @@
-package fr.gouv.culture.francetransfert.utils;
+package fr.gouv.culture.francetransfert.core.utils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
