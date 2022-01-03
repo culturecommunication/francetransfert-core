@@ -1,0 +1,24 @@
+package fr.gouv.culture.francetransfert.enums;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public enum AppSyncKeysEnum {
+	APP_SYNC_CLEANUP("app-sync-cleanup"), APP_SYNC_RELAUNCH("app-sync-relaunch"),
+	APP_SYNC_IGNIMISSION_DOMAIN("app-sync-ignimission-domain");
+
+	private String key;
+
+	AppSyncKeysEnum(String key) {
+		this.key = key;
+	}
+
+	public static List<String> keys() {
+		return Stream.of(AppSyncKeysEnum.values()).map(e -> e.key).collect(Collectors.toList());
+	}
+
+	public String getKey() {
+		return key;
+	}
+}

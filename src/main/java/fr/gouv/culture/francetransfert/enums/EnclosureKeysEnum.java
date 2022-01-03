@@ -1,0 +1,25 @@
+package fr.gouv.culture.francetransfert.enums;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public enum EnclosureKeysEnum {
+	TIMESTAMP("timestamp"), EXPIRED_TIMESTAMP("expired-timestamp"), PASSWORD("password"),
+	PASSWORD_GENERATED("password-generated"), MESSAGE("message"), UPLOAD_NB_FILES_DONE("upload-nb-files-done"),
+	PUBLIC_LINK("public-link"), PUBLIC_DOWNLOAD_COUNT("public-download-count"), TOKEN("token");
+
+	private String key;
+
+	EnclosureKeysEnum(String key) {
+		this.key = key;
+	}
+
+	public static List<String> keys() {
+		return Stream.of(EnclosureKeysEnum.values()).map(e -> e.key).collect(Collectors.toList());
+	}
+
+	public String getKey() {
+		return key;
+	}
+}
