@@ -1311,6 +1311,26 @@ public class RedisManager {
 		return ret;
 	}
 
+	public long ttl(String key) {
+		Jedis jedis = null;
+		boolean success = true;
+		long ret = -1;
+		try {
+			jedis = pool.getResource();
+			if (jedis == null) {
+				success = false;
+				throw new JedisException(JEDIS_NULL);
+			}
+			ret = jedis.ttl(key);
+		} catch (Exception e) {
+			success = false;
+			returnBrokenResource(jedis, "ttl:" + key, e);
+		} finally {
+			releaseRedisSource(success, jedis);
+		}
+		return ret;
+	}
+
 	protected String getHost() {
 		return host;
 	}
