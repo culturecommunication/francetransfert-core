@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisPubSub;
 import redis.clients.jedis.JedisSentinelPool;
+import redis.clients.jedis.Protocol;
 import redis.clients.jedis.exceptions.JedisException;
 import redis.clients.jedis.util.Pool;
 
@@ -32,6 +34,9 @@ public class RedisManager {
 
 	@Value("${metaload.port}")
 	private int port;
+
+	@Value("${metaload.password:#{null}}")
+	private String password;
 
 	@Value("${metaload.sentinel.active}")
 	private String sentinelActive;
@@ -95,11 +100,20 @@ public class RedisManager {
 				for (String sentinel : sentinelsArray) {
 					sentinels.add(sentinel);
 				}
-				this.pool = new JedisSentinelPool(getSentinelMasterName(), sentinels, poolConfig);
+				if (StringUtils.isBlank(password)) {
+					this.pool = new JedisSentinelPool(getSentinelMasterName(), sentinels, poolConfig);
+				} else {
+					this.pool = new JedisSentinelPool(getSentinelMasterName(), sentinels, poolConfig, password);
+				}
 			} else {
 				setHost(host);
 				setPort(port);
-				this.pool = new JedisPool(poolConfig, getHost(), getPort());
+				if (StringUtils.isBlank(password)) {
+					this.pool = new JedisPool(poolConfig, getHost(), getPort());
+				} else {
+					this.pool = new JedisPool(poolConfig, getHost(), getPort(), Protocol.DEFAULT_TIMEOUT, password);
+				}
+
 			}
 		}
 	}
