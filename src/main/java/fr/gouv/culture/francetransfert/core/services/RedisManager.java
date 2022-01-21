@@ -1345,6 +1345,26 @@ public class RedisManager {
 		return ret;
 	}
 
+	public String ping() {
+		Jedis jedis = null;
+		boolean success = true;
+		String ret = "";
+		try {
+			jedis = pool.getResource();
+			if (jedis == null) {
+				success = false;
+				throw new JedisException(JEDIS_NULL);
+			}
+			ret = jedis.ping();
+		} catch (Exception e) {
+			success = false;
+			returnBrokenResource(jedis, "ping", e);
+		} finally {
+			releaseRedisSource(success, jedis);
+		}
+		return ret;
+	}
+
 	protected String getHost() {
 		return host;
 	}

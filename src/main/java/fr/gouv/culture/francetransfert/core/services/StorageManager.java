@@ -15,6 +15,7 @@ import java.util.zip.Checksum;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +38,7 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadRequest;
 import com.amazonaws.services.s3.model.InitiateMultipartUploadResult;
+import com.amazonaws.services.s3.model.ListBucketsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PartETag;
@@ -48,7 +50,6 @@ import com.amazonaws.util.StringUtils;
 
 import fr.gouv.culture.francetransfert.core.exception.StorageException;
 import fr.gouv.culture.francetransfert.core.utils.AmazonS3Utils;
-
 
 @Service
 public class StorageManager {
@@ -122,7 +123,6 @@ public class StorageManager {
 
 		return buckets;
 	}
-
 
 	public ArrayList<String> listBucketContent(String bucketName) throws StorageException {
 
@@ -490,6 +490,12 @@ public class StorageManager {
 		String enc = Long.toHexString(checksum.getValue());
 		String zippedFileName = ZIPPED_ENCLOSURE_NAME_PREFIX + Long.parseLong(enc, 16);
 		return zippedFileName + ".zip";
+	}
+
+	public boolean healthCheckQuery() {
+		ListBucketsRequest listBucketsRequest = new ListBucketsRequest();
+		List<Bucket> bucketList = conn.listBuckets(listBucketsRequest);
+		return !CollectionUtils.isEmpty(bucketList);
 	}
 
 }
