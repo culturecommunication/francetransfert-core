@@ -1,6 +1,13 @@
 package fr.gouv.culture.francetransfert.core.model;
 
-import lombok.*;
+import javax.validation.constraints.NotBlank;
+
+import fr.gouv.culture.francetransfert.core.enums.CaptchaTypeEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -8,10 +15,17 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class FormulaireContactData {
-    private String nom;
-    private String prenom;
-    private String from;
-    private String administration;
-    private String message;
-    private String subject;
+
+	private String nom;
+	private String prenom;
+	@NotBlank
+	private String from;
+	private String administration;
+	@NotBlank
+	private String message;
+	private String subject;
+	// Captcha Info
+	private String challengeId;
+	private String userResponse;
+	private CaptchaTypeEnum captchaType;
 }
