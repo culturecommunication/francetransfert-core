@@ -103,7 +103,11 @@ public class RedisManager {
 				if (StringUtils.isBlank(password)) {
 					this.pool = new JedisSentinelPool(getSentinelMasterName(), sentinels, poolConfig);
 				} else {
-					this.pool = new JedisSentinelPool(getSentinelMasterName(), sentinels, poolConfig, password);
+					this.pool = new JedisSentinelPool(getSentinelMasterName(), sentinels, poolConfig,
+							Protocol.DEFAULT_TIMEOUT, Protocol.DEFAULT_TIMEOUT, password, Protocol.DEFAULT_DATABASE,
+							null, Protocol.DEFAULT_TIMEOUT, Protocol.DEFAULT_TIMEOUT, password, null);
+					// this.pool = new JedisSentinelPool(getSentinelMasterName(), sentinels,
+					// password, password);
 				}
 			} else {
 				setHost(host);
