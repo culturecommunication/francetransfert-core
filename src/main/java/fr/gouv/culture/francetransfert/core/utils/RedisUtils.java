@@ -33,6 +33,7 @@ public class RedisUtils {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(RedisUtils.class);
 
+
 	private RedisUtils() {
 		// private Constructor
 	}
@@ -192,6 +193,24 @@ public class RedisUtils {
 			return passTry;
 		}
 		return passTry;
+	}
+
+	public static Boolean isRecipientDeleted(RedisManager redisManager, String recipientId)
+			throws MetaloadException {
+		Integer passTry = 0;
+		Boolean deleted = false;
+		try {
+			passTry = Integer.valueOf(redisManager.getHgetString(RedisKeysEnum.FT_RECIPIENT.getKey(recipientId),
+					RecipientKeysEnum.LOGIC_DELETE.getKey()));
+			if(passTry == 1){
+				deleted = true;
+			}
+
+		} catch (NullPointerException | NumberFormatException | DateTimeParseException e) {
+			// Le nombre de try n'existe pas on return 0
+			return false;
+		}
+		return deleted;
 	}
 
 	/**
