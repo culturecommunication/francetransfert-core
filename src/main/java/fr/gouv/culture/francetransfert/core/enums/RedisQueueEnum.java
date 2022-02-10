@@ -5,8 +5,7 @@ public enum RedisQueueEnum {
 	DOWNLOAD_QUEUE("download-notification-queue"), TEMP_DATA_CLEANUP_QUEUE("redis-temp-data-cleanup-queue"),
 	CONFIRMATION_CODE_MAIL_QUEUE("confirmation-code-mail-queue"), TTL_CODE_CONFIRMATION("ttl-code-confirmaton"),
 	SATISFACTION_QUEUE("satisfaction-queue"), STAT_QUEUE("stat-queue"), SEQUESTRE_QUEUE("sequestre-queue"),
-	FORMULE_CONTACT_QUEUE("formule-contact-queue"),
-	NEW_RECIPIENT("new-recipient"), NEW_ID_RECIPIENT("new-id-recipient"), DELETE_RECIPIENT("delete-recipient");
+	FORMULE_CONTACT_QUEUE("formule-contact-queue"), DELETE_RECIPIENT("delete-recipient");
 
 	private String value;
 
