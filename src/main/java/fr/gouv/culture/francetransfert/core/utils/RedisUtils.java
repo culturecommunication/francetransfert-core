@@ -195,18 +195,17 @@ public class RedisUtils {
 		return passTry;
 	}
 
-	public static Boolean isRecipientDeleted(RedisManager redisManager, String recipientId)
-			throws MetaloadException {
-		Integer passTry = 0;
+	public static Boolean isRecipientDeleted(RedisManager redisManager, String recipientId) throws MetaloadException {
+		Integer logicDelete = 0;
 		Boolean deleted = false;
 		try {
-			passTry = Integer.valueOf(redisManager.getHgetString(RedisKeysEnum.FT_RECIPIENT.getKey(recipientId),
+			logicDelete = Integer.valueOf(redisManager.getHgetString(RedisKeysEnum.FT_RECIPIENT.getKey(recipientId),
 					RecipientKeysEnum.LOGIC_DELETE.getKey()));
-			if(passTry == 1){
+			if (logicDelete == 1) {
 				deleted = true;
 			}
 
-		} catch (NullPointerException | NumberFormatException | DateTimeParseException e) {
+		} catch (Exception e) {
 			// Le nombre de try n'existe pas on return 0
 			return false;
 		}
