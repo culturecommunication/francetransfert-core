@@ -33,7 +33,6 @@ public class RedisUtils {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(RedisUtils.class);
 
-
 	private RedisUtils() {
 		// private Constructor
 	}
@@ -48,7 +47,7 @@ public class RedisUtils {
 	}
 
 	public static String generateHashsha1(String value) {
-		return DigestUtils.sha1Hex(value);
+		return DigestUtils.sha1Hex(value.toLowerCase());
 	}
 
 	public static String getBucketName(RedisManager redisManager, String enclosureId, String bucketNamePrefix)
