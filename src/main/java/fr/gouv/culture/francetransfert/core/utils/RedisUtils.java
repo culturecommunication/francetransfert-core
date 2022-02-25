@@ -211,6 +211,19 @@ public class RedisUtils {
 		return deleted;
 	}
 
+	public static String getHashFileFromredis(RedisManager redisManager, String enclosureId) throws MetaloadException {
+		Integer logicDelete = 0;
+		String hashFile = null;
+		try {
+			hashFile = redisManager.getHgetString(RedisKeysEnum.FT_ENCLOSURE.getKey(enclosureId),
+					EnclosureKeysEnum.HASH_FILE.getKey());
+
+		} catch (Exception e) {
+			// Le nombre de try n'existe pas on return ;
+		}
+		return hashFile;
+	}
+
 	/**
 	 * Incrémente <strong>atomiquement</strong> le nombre de téléchargements
 	 * recensés pour un destinataire.

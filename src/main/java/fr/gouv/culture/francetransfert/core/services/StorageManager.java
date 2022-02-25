@@ -160,15 +160,17 @@ public class StorageManager {
 		}
 	}
 
-	public ObjectMetadata getObjectMetadata(String bucketName, String objectKey, File destFile)
+	public ObjectMetadata getObjectMetadata(String bucketName, String objectKey)
 			throws StorageException {
 
 		ObjectMetadata obj = null;
+		S3Object s3Object = null;
 
 		try {
 			String escapedObjectKey = AmazonS3Utils.escapeProblemCharsForObjectKey(objectKey);
 			GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, escapedObjectKey);
-			obj = conn.getObject(getObjectRequest, destFile);
+			s3Object = conn.getObject(getObjectRequest);
+			obj = s3Object.getObjectMetadata();
 		} catch (Exception e) {
 			throw new StorageException(e);
 		}
