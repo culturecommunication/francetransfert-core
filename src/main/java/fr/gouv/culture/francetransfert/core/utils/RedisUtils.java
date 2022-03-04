@@ -194,6 +194,23 @@ public class RedisUtils {
 		return passTry;
 	}
 
+	public static Boolean isRecipientDeleted(RedisManager redisManager, String recipientId) throws MetaloadException {
+		Integer logicDelete = 0;
+		Boolean deleted = false;
+		try {
+			logicDelete = Integer.valueOf(redisManager.getHgetString(RedisKeysEnum.FT_RECIPIENT.getKey(recipientId),
+					RecipientKeysEnum.LOGIC_DELETE.getKey()));
+			if (logicDelete == 1) {
+				deleted = true;
+			}
+
+		} catch (Exception e) {
+			// Le nombre de try n'existe pas on return 0
+			return false;
+		}
+		return deleted;
+	}
+
 	/**
 	 * Incrémente <strong>atomiquement</strong> le nombre de téléchargements
 	 * recensés pour un destinataire.
@@ -241,7 +258,7 @@ public class RedisUtils {
 
 	public static void incrementNumberOfCodeTry(RedisManager redisManager, String email) throws MetaloadException {
 		try {
-			redisManager.hincrBy("sender:" + RedisUtils.generateHashsha1(email) + ":", "code-sender-try", 1);
+			redisManager.hincrBy("sender:" + RedisUtils.generateHashsha1(email.toLowerCase()) + ":", "code-sender-try", 1);
 		} catch (Exception e) {
 			throw new MetaloadException(
 					MessageFormat.format("Echec à l incrémentation d'essai de code pour le mail' : {0}", email), e);
