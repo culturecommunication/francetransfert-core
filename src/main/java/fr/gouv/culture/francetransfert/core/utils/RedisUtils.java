@@ -212,14 +212,12 @@ public class RedisUtils {
 	}
 
 	public static String getHashFileFromredis(RedisManager redisManager, String enclosureId) throws MetaloadException {
-		Integer logicDelete = 0;
 		String hashFile = null;
 		try {
 			hashFile = redisManager.getHgetString(RedisKeysEnum.FT_ENCLOSURE.getKey(enclosureId),
 					EnclosureKeysEnum.HASH_FILE.getKey());
-
 		} catch (Exception e) {
-			// Le nombre de try n'existe pas on return ;
+			LOGGER.error("File doesnt have hash : " + e.getMessage(), e);
 		}
 		return hashFile;
 	}
@@ -271,7 +269,8 @@ public class RedisUtils {
 
 	public static void incrementNumberOfCodeTry(RedisManager redisManager, String email) throws MetaloadException {
 		try {
-			redisManager.hincrBy("sender:" + RedisUtils.generateHashsha1(email.toLowerCase()) + ":", "code-sender-try", 1);
+			redisManager.hincrBy("sender:" + RedisUtils.generateHashsha1(email.toLowerCase()) + ":", "code-sender-try",
+					1);
 		} catch (Exception e) {
 			throw new MetaloadException(
 					MessageFormat.format("Echec à l incrémentation d'essai de code pour le mail' : {0}", email), e);
