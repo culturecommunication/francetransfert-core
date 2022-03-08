@@ -112,8 +112,10 @@ public class Base64CryptoService {
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 		KeySpec spec = new PBEKeySpec(password, salt, 655, 256);
-		SecretKey secret = new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
-		return secret;
+		byte[] encodedKey = factory.generateSecret(spec).getEncoded();
+		factory = null;
+		spec = null;
+		return new SecretKeySpec(encodedKey, "AES");
 	}
 
 	public String aesEncrypt(String pText)
@@ -137,7 +139,7 @@ public class Base64CryptoService {
 		// prefix IV and Salt to cipher text
 		byte[] cipherTextWithIvSalt = ByteBuffer.allocate(iv.length + salt.length + cipherText.length).put(iv).put(salt)
 				.put(cipherText).array();
-
+		aesKeyFromPassword = null;
 		// string representation, base64, send this string to other for decryption.
 		return Base64.getEncoder().encodeToString(cipherTextWithIvSalt);
 	}
@@ -166,7 +168,7 @@ public class Base64CryptoService {
 			cipher.init(Cipher.DECRYPT_MODE, aesKeyFromPassword, new GCMParameterSpec(TAG_LENGTH_BIT, iv));
 
 			byte[] plainText = cipher.doFinal(cipherText);
-
+			aesKeyFromPassword = null;
 			return new String(plainText, StandardCharsets.UTF_8);
 		} catch (NoSuchAlgorithmException | InvalidKeySpecException | IllegalBlockSizeException | BadPaddingException
 				| InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException e) {
