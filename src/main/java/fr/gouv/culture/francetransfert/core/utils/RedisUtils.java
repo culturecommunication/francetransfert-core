@@ -1,8 +1,10 @@
 package fr.gouv.culture.francetransfert.core.utils;
 
 import java.text.MessageFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -397,6 +399,14 @@ public class RedisUtils {
 
 	public static Map<String, String> getFileInfo(RedisManager redisManager, String hashFid) throws MetaloadException {
 		return redisManager.hmgetAllString(RedisKeysEnum.FT_FILE.getKey(hashFid));
+	}
+
+	public static void addPliToDay(RedisManager redisManager, String senderId, String enclosureId) {
+		String senderKey = RedisKeysEnum.FT_SENDER_PLIS.getKey(senderId);
+		redisManager.saddString(senderKey, enclosureId);
+		int seconds = Math
+				.toIntExact(Duration.between(LocalDateTime.now(), LocalDate.now().atTime(LocalTime.MAX)).getSeconds());
+		redisManager.expire(senderKey, seconds);
 	}
 
 }
