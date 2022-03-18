@@ -160,8 +160,7 @@ public class StorageManager {
 		}
 	}
 
-	public ObjectMetadata getObjectMetadata(String bucketName, String objectKey)
-			throws StorageException {
+	public ObjectMetadata getObjectMetadata(String bucketName, String objectKey) throws StorageException {
 
 		ObjectMetadata obj = null;
 		S3Object s3Object = null;
@@ -350,16 +349,6 @@ public class StorageManager {
 	public String generateUploadIdOsu(String bucketName, String objectKey) throws StorageException {
 		InitiateMultipartUploadRequest initRequest = null;
 		InitiateMultipartUploadResult initResponse = null;
-		// Try creating bucket if continue if not working because bucket can be already
-		// created
-		try {
-			if (!conn.listBuckets().stream().filter(bucket -> bucketName != null && bucketName.equals(bucket.getName()))
-					.findFirst().isPresent()) {
-				conn.createBucket(bucketName);
-			}
-		} catch (Exception e) {
-			LOGGER.error("Error while creating bucket : " + e.getMessage(), e);
-		}
 
 		try {
 			String escapedObjectKey = AmazonS3Utils.escapeProblemCharsForObjectKey(objectKey);
@@ -367,6 +356,7 @@ public class StorageManager {
 			initResponse = conn.initiateMultipartUpload(initRequest);
 			return initResponse.getUploadId();
 		} catch (Exception e) {
+			LOGGER.error("Error while generate multipart ID : " + e.getMessage(), e);
 			throw new StorageException(e);
 		}
 	}
