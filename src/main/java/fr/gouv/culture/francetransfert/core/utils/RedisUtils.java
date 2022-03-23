@@ -137,14 +137,14 @@ public class RedisUtils {
 		return result;
 	}
 
-	public static long getTotalSizeEnclosure(RedisManager redisManager, String enclosureId) throws MetaloadException {
-		long totalSize = 0;
+	public static double getTotalSizeEnclosure(RedisManager redisManager, String enclosureId) throws MetaloadException {
+		double totalSize = 0;
 		List<String> rootFiles = getRootFiles(redisManager, enclosureId);
 		for (String rootFile : rootFiles) {
 			String key = RedisKeysEnum.FT_ROOT_FILE.getKey(RedisUtils.generateHashsha1(enclosureId + ":" + rootFile));
 			String size = redisManager.getHgetString(key, RootFileKeysEnum.SIZE.getKey());
 			if (size != null && !("".equals(size))) {
-				totalSize = totalSize + Long.valueOf(size);
+				totalSize = totalSize + Double.valueOf(size);
 			}
 		}
 		List<String> rootDirs = getRootDirs(redisManager, enclosureId);
@@ -152,7 +152,7 @@ public class RedisUtils {
 			String key = RedisKeysEnum.FT_ROOT_DIR.getKey(RedisUtils.generateHashsha1(enclosureId + ":" + rootDir));
 			String totalSizeDir = redisManager.getHgetString(key, RootDirKeysEnum.TOTAL_SIZE.getKey());
 			if (totalSizeDir != null && !("".equals(totalSizeDir))) {
-				totalSize = totalSize + Long.valueOf(totalSizeDir);
+				totalSize = totalSize + Double.valueOf(totalSizeDir);
 			}
 		}
 		return totalSize;
