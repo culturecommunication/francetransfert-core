@@ -6,7 +6,8 @@ import java.util.stream.Stream;
 
 public enum AppSyncKeysEnum {
 	APP_SYNC_CLEANUP("app-sync-cleanup"), APP_SYNC_RELAUNCH("app-sync-relaunch"),
-	APP_SYNC_IGNIMISSION_DOMAIN("app-sync-ignimission-domain");
+	APP_SYNC_IGNIMISSION_DOMAIN("app-sync-ignimission-domain"), APP_SYNC_CHECK_MAIL_SEND("app-sync-check-mail-send"),
+	APP_SYNC_CHECK_MAIL_CHECK("app-sync-check-mail-check");
 
 	private String key;
 

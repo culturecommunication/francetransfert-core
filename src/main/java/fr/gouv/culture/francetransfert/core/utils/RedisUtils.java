@@ -1,8 +1,10 @@
 package fr.gouv.culture.francetransfert.core.utils;
 
 import java.text.MessageFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -135,14 +137,14 @@ public class RedisUtils {
 		return result;
 	}
 
-	public static long getTotalSizeEnclosure(RedisManager redisManager, String enclosureId) throws MetaloadException {
-		long totalSize = 0;
+	public static double getTotalSizeEnclosure(RedisManager redisManager, String enclosureId) throws MetaloadException {
+		double totalSize = 0;
 		List<String> rootFiles = getRootFiles(redisManager, enclosureId);
 		for (String rootFile : rootFiles) {
 			String key = RedisKeysEnum.FT_ROOT_FILE.getKey(RedisUtils.generateHashsha1(enclosureId + ":" + rootFile));
 			String size = redisManager.getHgetString(key, RootFileKeysEnum.SIZE.getKey());
 			if (size != null && !("".equals(size))) {
-				totalSize = totalSize + Long.valueOf(size);
+				totalSize = totalSize + Double.valueOf(size);
 			}
 		}
 		List<String> rootDirs = getRootDirs(redisManager, enclosureId);
@@ -150,7 +152,7 @@ public class RedisUtils {
 			String key = RedisKeysEnum.FT_ROOT_DIR.getKey(RedisUtils.generateHashsha1(enclosureId + ":" + rootDir));
 			String totalSizeDir = redisManager.getHgetString(key, RootDirKeysEnum.TOTAL_SIZE.getKey());
 			if (totalSizeDir != null && !("".equals(totalSizeDir))) {
-				totalSize = totalSize + Long.valueOf(totalSizeDir);
+				totalSize = totalSize + Double.valueOf(totalSizeDir);
 			}
 		}
 		return totalSize;
@@ -211,6 +213,17 @@ public class RedisUtils {
 		return deleted;
 	}
 
+	public static String getHashFileFromredis(RedisManager redisManager, String enclosureId) throws MetaloadException {
+		String hashFile = null;
+		try {
+			hashFile = redisManager.getHgetString(RedisKeysEnum.FT_ENCLOSURE.getKey(enclosureId),
+					EnclosureKeysEnum.HASH_FILE.getKey());
+		} catch (Exception e) {
+			LOGGER.error("File doesnt have hash : " + e.getMessage(), e);
+		}
+		return hashFile;
+	}
+
 	/**
 	 * Incrémente <strong>atomiquement</strong> le nombre de téléchargements
 	 * recensés pour un destinataire.
@@ -258,7 +271,8 @@ public class RedisUtils {
 
 	public static void incrementNumberOfCodeTry(RedisManager redisManager, String email) throws MetaloadException {
 		try {
-			redisManager.hincrBy("sender:" + RedisUtils.generateHashsha1(email.toLowerCase()) + ":", "code-sender-try", 1);
+			redisManager.hincrBy("sender:" + RedisUtils.generateHashsha1(email.toLowerCase()) + ":", "code-sender-try",
+					1);
 		} catch (Exception e) {
 			throw new MetaloadException(
 					MessageFormat.format("Echec à l incrémentation d'essai de code pour le mail' : {0}", email), e);
@@ -385,6 +399,14 @@ public class RedisUtils {
 
 	public static Map<String, String> getFileInfo(RedisManager redisManager, String hashFid) throws MetaloadException {
 		return redisManager.hmgetAllString(RedisKeysEnum.FT_FILE.getKey(hashFid));
+	}
+
+	public static void addPliToDay(RedisManager redisManager, String senderId, String enclosureId) {
+		String senderKey = RedisKeysEnum.FT_SENDER_PLIS.getKey(senderId);
+		redisManager.saddString(senderKey, enclosureId);
+		int seconds = Math
+				.toIntExact(Duration.between(LocalDateTime.now(), LocalDate.now().atTime(LocalTime.MAX)).getSeconds());
+		redisManager.expire(senderKey, seconds);
 	}
 
 }

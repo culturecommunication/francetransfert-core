@@ -160,15 +160,16 @@ public class StorageManager {
 		}
 	}
 
-	public ObjectMetadata getObjectMetadata(String bucketName, String objectKey, File destFile)
-			throws StorageException {
+	public ObjectMetadata getObjectMetadata(String bucketName, String objectKey) throws StorageException {
 
 		ObjectMetadata obj = null;
+		S3Object s3Object = null;
 
 		try {
 			String escapedObjectKey = AmazonS3Utils.escapeProblemCharsForObjectKey(objectKey);
 			GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, escapedObjectKey);
-			obj = conn.getObject(getObjectRequest, destFile);
+			s3Object = conn.getObject(getObjectRequest);
+			obj = s3Object.getObjectMetadata();
 		} catch (Exception e) {
 			throw new StorageException(e);
 		}
@@ -281,8 +282,12 @@ public class StorageManager {
 		}
 	}
 
-	public void deleteObject(String bucketName, String objectKey) {
-		conn.deleteObject(bucketName, AmazonS3Utils.escapeProblemCharsForObjectKey(objectKey));
+	public void deleteObject(String bucketName, String objectKey) throws StorageException {
+		try {
+			conn.deleteObject(bucketName, AmazonS3Utils.escapeProblemCharsForObjectKey(objectKey));
+		} catch (Exception e) {
+			throw new StorageException(e);
+		}
 	}
 
 	public URL generateDownloadURL(String bucketName, String objectKey, int expireInMinutes) throws StorageException {
@@ -344,6 +349,7 @@ public class StorageManager {
 	public String generateUploadIdOsu(String bucketName, String objectKey) throws StorageException {
 		InitiateMultipartUploadRequest initRequest = null;
 		InitiateMultipartUploadResult initResponse = null;
+
 		// Try creating bucket if continue if not working because bucket can be already
 		// created
 		try {
@@ -352,7 +358,7 @@ public class StorageManager {
 				conn.createBucket(bucketName);
 			}
 		} catch (Exception e) {
-			LOGGER.error("Error while creating bucket : " + e.getMessage(), e);
+			LOGGER.info("generateUploadIdOsu Error while creating bucket : " + e.getMessage(), e);
 		}
 
 		try {
@@ -361,6 +367,7 @@ public class StorageManager {
 			initResponse = conn.initiateMultipartUpload(initRequest);
 			return initResponse.getUploadId();
 		} catch (Exception e) {
+			LOGGER.error("Error while generate multipart ID : " + e.getMessage(), e);
 			throw new StorageException(e);
 		}
 	}
@@ -379,12 +386,17 @@ public class StorageManager {
 	}
 
 	public String completeMultipartUpload(String bucketName, String objectKey, String uploadId,
-			List<PartETag> partETags) {
-		String escapedObjectKey = AmazonS3Utils.escapeProblemCharsForObjectKey(objectKey);
-		CompleteMultipartUploadRequest compRequest = new CompleteMultipartUploadRequest(bucketName, escapedObjectKey,
-				uploadId, partETags);
-		conn.completeMultipartUpload(compRequest);
-		return objectKey;
+			List<PartETag> partETags) throws StorageException {
+
+		try {
+			String escapedObjectKey = AmazonS3Utils.escapeProblemCharsForObjectKey(objectKey);
+			CompleteMultipartUploadRequest compRequest = new CompleteMultipartUploadRequest(bucketName,
+					escapedObjectKey, uploadId, partETags);
+			conn.completeMultipartUpload(compRequest);
+			return objectKey;
+		} catch (Exception e) {
+			throw new StorageException(e);
+		}
 	}
 
 	public void uploadMultipartForZip(String bucketName, String objectKey, String localFilePath)
@@ -446,9 +458,13 @@ public class StorageManager {
 		}
 	}
 
-	public void moveOnSequestre(String nameBucketSource, String fileName) {
-		conn.copyObject(nameBucketSource, fileName, sequestreBucket, fileName);
-		conn.deleteObject(nameBucketSource, fileName);
+	public void moveOnSequestre(String nameBucketSource, String fileName) throws StorageException {
+		try {
+			conn.copyObject(nameBucketSource, fileName, sequestreBucket, fileName);
+			conn.deleteObject(nameBucketSource, fileName);
+		} catch (Exception e) {
+			throw new StorageException(e);
+		}
 	}
 
 	public String getAccessKey() {

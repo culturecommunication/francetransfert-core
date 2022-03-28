@@ -8,11 +8,15 @@ import java.util.Set;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tika.Tika;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MimeService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MimeService.class);
 
 	@Value("${extension.name}")
 	private List<String> extensionList;
@@ -67,6 +71,16 @@ public class MimeService {
 //			}
 //		}
 		return authorised;
+	}
+
+	public String getMimeTypeFromFile(FileInputStream fileInputStream) {
+		String mimeType = "";
+		try {
+			mimeType = tika.detect(fileInputStream);
+		} catch (IOException e) {
+			LOGGER.error("Error while getting mimetype", e);
+		}
+		return mimeType;
 	}
 
 	public Set<String> authorisedMimeList() {
