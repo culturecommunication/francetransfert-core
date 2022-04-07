@@ -170,6 +170,8 @@ public class StorageManager {
 			String escapedObjectKey = AmazonS3Utils.escapeProblemCharsForObjectKey(objectKey);
 			GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, escapedObjectKey);
 			s3Object = conn.getObject(getObjectRequest);
+			s3Object.getObjectContent().abort();
+			s3Object.getObjectContent().close();
 			obj = s3Object.getObjectMetadata();
 			etag = obj.getETag();
 			s3Object.close();
