@@ -160,21 +160,33 @@ public class StorageManager {
 		}
 	}
 
-	public ObjectMetadata getObjectMetadata(String bucketName, String objectKey) throws StorageException {
+	public String getEtag(String bucketName, String objectKey) throws StorageException {
 
 		ObjectMetadata obj = null;
 		S3Object s3Object = null;
+		String etag = null;
 
 		try {
 			String escapedObjectKey = AmazonS3Utils.escapeProblemCharsForObjectKey(objectKey);
 			GetObjectRequest getObjectRequest = new GetObjectRequest(bucketName, escapedObjectKey);
 			s3Object = conn.getObject(getObjectRequest);
+			s3Object.getObjectContent().abort();
+			s3Object.getObjectContent().close();
 			obj = s3Object.getObjectMetadata();
+			etag = obj.getETag();
+			s3Object.close();
 		} catch (Exception e) {
+			if (s3Object != null) {
+				try {
+					s3Object.close();
+				} catch (Exception e2) {
+					LOGGER.error("Error closing S3object", e);
+				}
+			}
 			throw new StorageException(e);
 		}
 
-		return obj;
+		return etag;
 	}
 
 	public void setFileACLPublic(String bucketName, String objectKey) {
