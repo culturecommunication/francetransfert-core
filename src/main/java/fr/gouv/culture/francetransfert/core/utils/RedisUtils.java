@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import fr.gouv.culture.francetransfert.core.enums.EnclosureKeysEnum;
 import fr.gouv.culture.francetransfert.core.enums.FileKeysEnum;
+import fr.gouv.culture.francetransfert.core.enums.PliKeysEnum;
 import fr.gouv.culture.francetransfert.core.enums.RecipientKeysEnum;
 import fr.gouv.culture.francetransfert.core.enums.RedisKeysEnum;
 import fr.gouv.culture.francetransfert.core.enums.RootDirKeysEnum;
@@ -119,7 +120,33 @@ public class RedisUtils {
 		}
 		return result;
 	}
+	
+	//added by abir
+	@SuppressWarnings("null")
+	public static  List<String>  getSentPli(RedisManager redisManager, String send) throws MetaloadException {
+	
+		List<String> result = new ArrayList<String>();
+		
+		redisManager.smembersString(RedisKeysEnum.FT_SEND.getKey(send)).forEach(enclosureId -> {
+			LOGGER.info("-----------enclosureId pli-------- : {}", enclosureId);
+			result.add(enclosureId);
+		});
+		return result;
+		
+	}
+	
+	
+	
+	//added by abir
+	public static void updateListOfPli(RedisManager redisManager, String senderEmailKey, String enclosureId)
+			throws MetaloadException {
 
+		String keyPli = RedisKeysEnum.FT_SEND.getKey(senderEmailKey);
+		redisManager.saddString(keyPli,  enclosureId);
+		}
+
+	//----------
+	
 	public static List<String> getRootDirs(RedisManager redisManager, String enclosureId) throws MetaloadException {
 		return redisManager.lrange(RedisKeysEnum.FT_ROOT_DIRS.getKey(enclosureId), 0, -1);
 	}
