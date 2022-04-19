@@ -8,7 +8,8 @@ public enum EnclosureKeysEnum {
 	TIMESTAMP("timestamp"), EXPIRED_TIMESTAMP("expired-timestamp"), PASSWORD("password"),
 	PASSWORD_GENERATED("password-generated"), MESSAGE("message"), SUBJECT("subject"),
 	UPLOAD_NB_FILES_DONE("upload-nb-files-done"), PUBLIC_LINK("public-link"),
-	PUBLIC_DOWNLOAD_COUNT("public-download-count"), TOKEN("token"),  HASH_FILE("hash-file");
+	PUBLIC_DOWNLOAD_COUNT("public-download-count"), TOKEN("token"),  HASH_FILE("hash-file"),
+	LANGUAGE("language"), PASSWORD_ZIP("zip-password");
 
 	private String key;
 
