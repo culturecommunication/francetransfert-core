@@ -1369,6 +1369,26 @@ public class RedisManager {
 		return ret;
 	}
 
+	public long lrem(String key, long count, String value) {
+		Jedis jedis = null;
+		boolean success = true;
+		long ret = 0L;
+		try {
+			jedis = pool.getResource();
+			if (jedis == null) {
+				success = false;
+				throw new JedisException(JEDIS_NULL);
+			}
+			ret = jedis.lrem(key, count, value);
+		} catch (Exception e) {
+			success = false;
+			returnBrokenResource(jedis, "lrem" + key, e);
+		} finally {
+			releaseRedisSource(success, jedis);
+		}
+		return ret;
+	}
+
 	protected String getHost() {
 		return host;
 	}
