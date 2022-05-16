@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
@@ -13,6 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import fr.gouv.culture.francetransfert.core.enums.RedisKeysEnum;
+import fr.gouv.culture.francetransfert.core.exception.ErrorEnum;
+import fr.gouv.culture.francetransfert.core.exception.MetaloadException;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -79,6 +83,9 @@ public class RedisManager {
 
 	@Value("${metaload.poolconfig.blockWhenExhausted}")
 	private boolean blockWhenExhausted;
+
+	@Value("${expire.token.sender:1800}")
+	private int expireTokenSender;
 
 	private Pool<Jedis> pool = null;
 
@@ -157,6 +164,44 @@ public class RedisManager {
 			} catch (Exception e) {
 				throw e;
 			}
+		}
+	}
+
+	public void extendTokenValidity(String senderMail, String token) throws MetaloadException {
+
+		checkTokenValidity(senderMail, token);
+		String tokenKey = RedisKeysEnum.FT_TOKEN_SENDER.getKey(senderMail) + ":" + token;
+		boolean tokenExist = exists(tokenKey);
+		if (tokenExist) {
+			int secondToExpire = expireTokenSender;
+			expire(tokenKey, secondToExpire);
+		}
+
+	}
+
+	public void validateToken(String senderMail, String token) throws MetaloadException {
+		// verify token in redis
+		LOGGER.debug("check token for sender mail {}", senderMail);
+		checkTokenValidity(senderMail, token);
+	}
+
+	private void checkTokenValidity(String senderMail, String token) throws MetaloadException {
+
+		if (token != null && !token.equalsIgnoreCase("unknown")) {
+			boolean tokenExistInRedis;
+			try {
+				String tokenKey = RedisKeysEnum.FT_TOKEN_SENDER.getKey(senderMail) + ":" + token;
+				tokenExistInRedis = exists(tokenKey);
+			} catch (Exception e) {
+				String uuid = UUID.randomUUID().toString();
+				throw new MetaloadException(
+						ErrorEnum.TECHNICAL_ERROR.getValue() + " validating token : " + e.getMessage(), uuid, e);
+			}
+			if (!tokenExistInRedis) {
+				throw new MetaloadException("Invalid token: token does not exist in redis");
+			}
+		} else {
+			throw new MetaloadException("Invalid token");
 		}
 	}
 
