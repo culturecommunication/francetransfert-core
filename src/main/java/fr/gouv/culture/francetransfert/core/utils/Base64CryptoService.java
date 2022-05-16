@@ -28,6 +28,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
+import org.passay.IllegalRegexRule;
 import org.passay.LengthRule;
 import org.passay.PasswordData;
 import org.passay.PasswordGenerator;
@@ -182,13 +183,8 @@ public class Base64CryptoService {
 		return nonce;
 	}
 
-	private List<Rule> getPasswordRules() {
-		List<Rule> rules = new ArrayList<>();
-		// Rule 1: Password length should be in between
-		// 8 and 16 characters
-		rules.add(new LengthRule(passwordMinSize, passwordMaxSize));
-		// Rule 2: No whitespace allowed
-		rules.add(new WhitespaceRule());
+	private List<CharacterRule> getCharRules() {
+		ArrayList rules = new ArrayList();
 		// Rule 3.a: At least one Upper-case character
 		rules.add(new CharacterRule(EnglishCharacterData.UpperCase, passwordLowerMin));
 		// Rule 3.b: At least one Lower-case character
@@ -206,7 +202,19 @@ public class Base64CryptoService {
 			}
 		};
 		rules.add(new CharacterRule(specialChars, passwordSpecialMin));
+		return rules;
+	}
 
+	private List<Rule> getPasswordRules() {
+		List<Rule> rules = new ArrayList<>();
+		// Rule 1: Password length should be in between
+		// 8 and 16 characters
+		rules.add(new LengthRule(passwordMinSize, passwordMaxSize));
+		// Rule 2: No whitespace allowed
+		rules.add(new WhitespaceRule());
+		rules.addAll(getCharRules());
+		String regex = "[^a-zA-Z0-9" + passwordSpecialList + "]+";
+		rules.add(new IllegalRegexRule(regex));
 		return rules;
 
 	}
@@ -214,7 +222,7 @@ public class Base64CryptoService {
 	public String generatePassword(int count) {
 		LOGGER.info("Generate new password");
 		PasswordGenerator gen = new PasswordGenerator();
-		CharacterRule[] rule = getPasswordRules().subList(2, getPasswordRules().size()).toArray(new CharacterRule[0]);
+		CharacterRule[] rule = getCharRules().toArray(new CharacterRule[0]);
 		String password = "";
 		try {
 			password = gen.generatePassword(passwordMinSize, rule);
