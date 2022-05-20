@@ -13,7 +13,8 @@ public enum RedisKeysEnum {
 	FT_CODE_SENDER("sender:", ":confirmation-email-code"), FT_CODE_TRY("sender:", ":code-sender-try"),
 	FT_TOKEN_SENDER("sender:", ":token"), FT_SENDER_PLIS("sender:", ":plis"),
 	FT_DOMAINS_MAILS_MAILS("enclosure-mails:mails", ""), FT_DOMAINS_MAILS_TMP("enclosure-mails:tmp", ""),
-	CHECK_MAIL("check-mail", ""), FT_SEND("send:", ""), FT_RECEIVE("receive:", "");
+	CHECK_MAIL("check-mail", ""), FT_SEND("send:", ""), FT_RECEIVE("receive:", ""),
+	FT_Download_Date("recipient:", ":dates");
 
 	private String firstKeyPart;
 	private String lastKeyPart;
