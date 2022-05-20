@@ -831,7 +831,7 @@ public class RedisManager {
 		} catch (Exception e) {
 			success = false;
 			returnBrokenResource(jedis, "scardString" + key, e);
-			LOGGER.warn("scardString : " + e.getMessage(), e);
+			LOGGER.debug("scardString : " + e.getMessage(), e);
 		} finally {
 			releaseRedisSource(success, jedis);
 		}
