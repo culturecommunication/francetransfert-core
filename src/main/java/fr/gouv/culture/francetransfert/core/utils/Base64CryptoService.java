@@ -213,7 +213,7 @@ public class Base64CryptoService {
 		// Rule 2: No whitespace allowed
 		rules.add(new WhitespaceRule());
 		rules.addAll(getCharRules());
-		String regex = "[^a-zA-Z0-9" + passwordSpecialList + "]+";
+		String regex = "[^a-zA-Z0-9\\Q" + passwordSpecialList + "\\E]+";
 		rules.add(new IllegalRegexRule(regex));
 		return rules;
 
