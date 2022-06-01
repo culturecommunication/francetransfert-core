@@ -254,7 +254,7 @@ public class Base64CryptoService {
 					return false;
 				}
 			} catch (Exception e) {
-				LOGGER.info("not valid password Exception");
+				LOGGER.info("not valid password Exception", e);
 				return false;
 			}
 		}
