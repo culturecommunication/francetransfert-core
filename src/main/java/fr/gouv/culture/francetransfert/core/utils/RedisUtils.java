@@ -122,21 +122,36 @@ public class RedisUtils {
 		return result;
 	}
 
-	public static List<String> getSentPli(RedisManager redisManager, String send) throws MetaloadException {
-
-		Set<String> pliSet = redisManager.smembersString(RedisKeysEnum.FT_SEND.getKey(send));
+	public static List<String> getSentPli(RedisManager redisManager, String mail) throws MetaloadException {
+		Set<String> pliSet = redisManager.smembersString(RedisKeysEnum.FT_SEND.getKey(mail));
 		if (!CollectionUtils.isEmpty(pliSet)) {
 			return new ArrayList<String>(pliSet);
 		}
 		return null;
-
 	}
 
-	public static void updateListOfPli(RedisManager redisManager, String senderEmail, String enclosureId)
-			throws MetaloadException {
+	public static List<String> getReceivedPli(RedisManager redisManager, String mail) throws MetaloadException {
+		Set<String> pliSet = redisManager.smembersString(RedisKeysEnum.FT_RECEIVE.getKey(mail));
+		if (!CollectionUtils.isEmpty(pliSet)) {
+			return new ArrayList<String>(pliSet);
+		}
+		return null;
+	}
 
+	public static void updateListOfPliSent(RedisManager redisManager, String senderEmail, String enclosureId)
+			throws MetaloadException {
 		String keyPli = RedisKeysEnum.FT_SEND.getKey(senderEmail);
 		redisManager.saddString(keyPli, enclosureId);
+	}
+
+	public static void updateListOfPliReceived(RedisManager redisManager, List<String> senderEmail, String enclosureId)
+			throws MetaloadException {
+		if (!CollectionUtils.isEmpty(senderEmail)) {
+			senderEmail.stream().forEach(x -> {
+				String keyPli = RedisKeysEnum.FT_RECEIVE.getKey(x);
+				redisManager.saddString(keyPli, enclosureId);
+			});
+		}
 	}
 
 	public static List<String> getRootDirs(RedisManager redisManager, String enclosureId) throws MetaloadException {
