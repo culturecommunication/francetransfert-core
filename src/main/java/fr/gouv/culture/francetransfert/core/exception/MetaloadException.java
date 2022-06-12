@@ -1,8 +1,11 @@
 package fr.gouv.culture.francetransfert.core.exception;
 
+import lombok.Getter;
+
 /**
  * Exception générique pendant une opération de la Metaload API.
  */
+@Getter
 public class MetaloadException extends Exception {
 
 	/**
@@ -10,27 +13,35 @@ public class MetaloadException extends Exception {
 	 */
 	private static final long serialVersionUID = 5657417082244325824L;
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @param message Description spécifique
-	 */
+	private String type;
+	private String id;
+	private Throwable ex;
+
+	public MetaloadException(String type, String id) {
+		super(type);
+		this.type = type;
+		this.id = id;
+	}
+
 	public MetaloadException(String message) {
 		super(message);
+		this.type = message;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @param message Description spécifique
-	 * @param e       Exception parente
-	 */
-	public MetaloadException(String message, Throwable e) {
-		super(message, e);
+	public MetaloadException(String message, Throwable ex) {
+		super(message, ex);
+		this.type = message;
 	}
 
-	public MetaloadException(Throwable e) {
-		super(e);
+	public MetaloadException(String message, String id, Throwable ex) {
+		super(message, ex);
+		this.id = id;
+		this.type = message;
+	}
+
+	public MetaloadException(Throwable ex) {
+		super(ex);
+		this.type = ex.getMessage();
 	}
 
 }
