@@ -1,3 +1,10 @@
+/*
+  * Copyright (c) Ministère de la Culture (2022) 
+  * 
+  * SPDX-License-Identifier: Apache-2.0 
+  * License-Filename: LICENSE.txt 
+  */
+
 package fr.gouv.culture.francetransfert.core.enums;
 
 import java.util.List;
@@ -10,6 +17,7 @@ public enum EnclosureKeysEnum {
 	UPLOAD_NB_FILES_DONE("upload-nb-files-done"), PUBLIC_LINK("public-link"),
 	PUBLIC_DOWNLOAD_COUNT("public-download-count"), TOKEN("token"), HASH_FILE("hash-file"), LANGUAGE("language"),
 	PASSWORD_ZIP("zip-password"), DELETED("deleted");
+
 
 	private String key;
 
