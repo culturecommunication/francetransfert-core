@@ -18,6 +18,7 @@ public enum EnclosureKeysEnum {
 	PUBLIC_DOWNLOAD_COUNT("public-download-count"), TOKEN("token"), HASH_FILE("hash-file"), LANGUAGE("language"),
 	PASSWORD_ZIP("zip-password"), DELETED("deleted"), EXPIRED_TIMESTAMP_ARCHIVE("expired-timestamp-archive");
 
+
 	private String key;
 
 	EnclosureKeysEnum(String key) {
