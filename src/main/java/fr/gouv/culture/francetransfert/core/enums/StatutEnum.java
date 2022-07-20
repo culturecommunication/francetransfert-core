@@ -6,33 +6,38 @@
  */
 
 package fr.gouv.culture.francetransfert.core.enums;
+
 //---
 public enum StatutEnum {
 
-	EN_COURS("code","libelle") ;
+	ECH("011-ECH", "Erreur lors du chargement du pli"), CHT("012-CHT", "Chargement terminé"),
+	ECC("010-ECC", "En cours de chargement"), INI("000-INI", "Initialisé"), EDC("040-EDC", "Envoi des courriels"),
+	PAT("042-PAT", "Prêt au téléchargement"), EEC("041-EEC", "Erreur lors de l’envoi des courriels"),
+	AAV("030-AAV", "Analyse antivirale"), EAV("031-EAV", "Erreur détectée lors de l’analyse antivirale"),
+	APT("032-APT", "Analyse antivirale du pli terminée");
 
-
-	StatutEnum(String key, String value) {
-		this.setKey(key);
-		this.setValue(value);
+	StatutEnum(String code, String word) {
+		this.setCode(code);
+		this.setWord(word);
 	}
 
-	public String getKey() {
-		return key;
-	}
-	public String getValue() {
-		return value;
+	public String getCode() {
+		return code;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
-	}
-	
-	public void setValue(String value) {
-		this.value = value;
+	public String getWord() {
+		return word;
 	}
 
-	private String key;
-	private String value;
-	
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public void setWord(String word) {
+		this.word = word;
+	}
+
+	private String code;
+	private String word;
+
 }
