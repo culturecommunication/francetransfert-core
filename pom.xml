@@ -3,7 +3,7 @@
 
 	<groupId>fr.gouv.culture.francetransfert</groupId>
 	<artifactId>FTR-core</artifactId>
-	<version>3.6.3</version>
+	<version>3.6.4</version>
 	<packaging>jar</packaging>
 
 	<name>FTR-core</name>
