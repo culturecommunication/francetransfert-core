@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 
 public enum TypePliEnum {
 
-	LINK("link"), COURRIEL("mail");
+	LINK("LIE"), COURRIEL("COU");
 
 	
 	private String key;
