@@ -36,7 +36,25 @@ public enum ValidationErrorEnum {
 	FT021("fichiers.tailleFichier", "ERR_FT01_021", "La taille de chaque fichier ne peut pas dépasser 2 147 483 648 octets (2 Go)"),
 	FT022("fichiers.tailleFichier", "ERR_FT01_022", "La taille totale du pli ne peut pas dépasser 21 474 836 480 (20 Go)"),	
 	FT023("fichiers.idFichier", "ERR_FT01_023", "L’identifiant de fichier est obligatoire"),
-	FT024("fichiers.cheminRelatif", "ERR_FT01_024", "Le chemin relatif d’accès au fichier est obligatoire");
+	FT024("fichiers.cheminRelatif", "ERR_FT01_024", "Le chemin relatif d’accès au fichier est obligatoire"),
+	
+	FT202("courrielExpediteur", "ERR_FT02_002", "Le domaine de messagerie du courriel expéditeur doit être celui d’un agent de l’Etat "),
+	FT203("courrielExpediteur", "ERR_FT02_003", "Le courriel expéditeur est obligatoire"),
+	FT204("courrielExpediteur", "ERR_FT02_004", "Le courriel expéditeur doit respecter le format d’un courriel"),
+	FT205("idPli", "ERR_FT02_005", "Le courriel expéditeur et l’identifiant de pli indiqués dans la requête doivent correspondre à un pli connu de France transfert"),	
+	FT206("idFichier", "ERR_FT02_006", "L’identifiant de fichier est obligatoire"),
+	FT207("nomFichier", "ERR_FT02_007", "Le nom de fichier est obligatoire"),
+	FT208("morceauFichier", "ERR_FT02_008", "Le numéro de morceau du fichier est obligatoire"),
+	FT209("morceauFichier", "ERR_FT02_009", "Le numéro de morceau du fichier doit être inférieur ou égal au nombre total de morceaux du fichier"),
+	FT2010("morceauFichier", "ERR_FT02_010", "Le numéro de morceau du fichier doit être un entier supérieur à 0"),
+	FT2011("totalMorceauxFichier", "ERR_FT02_011", "Le nombre total de morceaux du fichier est obligatoire"),
+	FT2012("totalMorceauxFichier", "ERR_FT02_012", "Le nombre total de morceaux du fichier doit être un entier supérieur à 0"),
+	FT2013("tailleMorceauFichier", "ERR_FT02_013", "La taille du morceau du fichier est obligatoire"),
+	FT2014("tailleMorceauFichier", "ERR_FT02_014", "La taille du morceau du fichier doit être un entier supérieur à 0"),
+	FT2016("fichier", "ERR_FT02_016", "Le contenu du fichier est obligatoire"),
+	FT2017("", "ERR_FT02_017", "Pour autoriser le chargement des fichiers du pli, le statut du pli doit être 000-INI ou 010-ECC"),
+	FT2018("tailleFichier", "ERR_FT02_018", "La taille du fichier doit être un entier supérieur à 0"),
+	FT2019("tailleFichier", "ERR_FT02_019", "La taille du fichier est obligatoire");
 
 	
 
