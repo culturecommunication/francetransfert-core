@@ -206,7 +206,7 @@ public class RedisUtils {
 			return Integer.valueOf(redisManager.getHgetString(RedisKeysEnum.FT_RECIPIENT.getKey(recipientId),
 					RecipientKeysEnum.NB_DL.getKey()));
 		} catch (NumberFormatException e) {
-			throw new MetaloadException("value does not exist");
+			return 0;
 		}
 	}
 
