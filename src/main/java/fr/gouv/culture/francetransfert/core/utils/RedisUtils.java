@@ -381,6 +381,20 @@ public class RedisUtils {
 		return redisManager.getHgetString(keyRecipients, mailRecipient);
 	}
 
+	public static boolean checkRecipientMailInEnclosure(RedisManager redisManager, String enclosureId,
+			String mailRecipient) throws MetaloadException {
+		String keyRecipients = RedisKeysEnum.FT_RECIPIENTS.getKey(enclosureId);
+		Map<String, String> recipientMap = redisManager.hmgetAllString(keyRecipients);
+		return recipientMap.containsKey(mailRecipient);
+	}
+
+	public static boolean checkRecipientIdInEnclosure(RedisManager redisManager, String enclosureId, String recipientId)
+			throws MetaloadException {
+		String keyRecipients = RedisKeysEnum.FT_RECIPIENTS.getKey(enclosureId);
+		Map<String, String> recipientMap = redisManager.hmgetAllString(keyRecipients);
+		return recipientMap.containsValue(recipientId);
+	}
+
 	// =============================================================================================================================================================================
 
 	public static void updateListOfDatesEnclosure(RedisManager redisManager, String enclosureId)
