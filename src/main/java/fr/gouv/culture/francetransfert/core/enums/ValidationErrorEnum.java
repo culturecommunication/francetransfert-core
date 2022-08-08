@@ -38,8 +38,6 @@ public enum ValidationErrorEnum {
 	FT023("fichiers.idFichier", "ERR_FT01_023", "L’identifiant de fichier est obligatoire"),
 	FT024("fichiers.cheminRelatif", "ERR_FT01_024", "Le chemin relatif d’accès au fichier est obligatoire"),
 	
-	FT202("courrielExpediteur", "ERR_FT02_002", "Le domaine de messagerie du courriel expéditeur doit être celui d’un agent de l’Etat "),
-	FT203("courrielExpediteur", "ERR_FT02_003", "Le courriel expéditeur est obligatoire"),
 	FT204("courrielExpediteur", "ERR_FT02_004", "Le courriel expéditeur doit respecter le format d’un courriel"),
 	FT205("idPli", "ERR_FT02_005", "Le courriel expéditeur et l’identifiant de pli indiqués dans la requête doivent correspondre à un pli connu de France transfert"),	
 	FT206("idFichier", "ERR_FT02_006", "L’identifiant de fichier est obligatoire"),
