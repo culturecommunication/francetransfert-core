@@ -52,7 +52,10 @@ public enum ValidationErrorEnum {
 	FT2016("fichier", "ERR_FT02_016", "Le contenu du fichier est obligatoire"),
 	FT2017("", "ERR_FT02_017", "Pour autoriser le chargement des fichiers du pli, le statut du pli doit être 000-INI ou 010-ECC"),
 	FT2018("tailleFichier", "ERR_FT02_018", "La taille du fichier doit être un entier supérieur à 0"),
-	FT2019("tailleFichier", "ERR_FT02_019", "La taille du fichier est obligatoire");
+	FT2019("tailleFichier", "ERR_FT02_019", "La taille du fichier est obligatoire"),
+	
+	
+	FT406("", "ERR_FT04_006", "Pour autoriser la fourniture des métadonnées du pli, le statut du pli doit être 032-PAT");
 
 	
 
