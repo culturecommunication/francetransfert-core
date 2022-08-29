@@ -366,6 +366,23 @@ public class RedisUtils {
 		}
 	}
 
+	public static Long getCounterOfChunkIteration(RedisManager redisManager, String fileId) throws MetaloadException {
+		try {
+			String nbChunk = redisManager.getHgetString(RedisKeysEnum.FT_FILE.getKey(fileId),
+					FileKeysEnum.MUL_CHUNKS_ITERATION.getKey());
+			if (StringUtils.isBlank(nbChunk)) {
+				return Long.valueOf("0");
+			} else {
+				return Long.valueOf(nbChunk);
+			}
+		} catch (Exception e) {
+			throw new MetaloadException(
+					MessageFormat.format(
+							"Echec à l incrémentation du compteur des chunk(s) uploader pour ce fichier: {0}", fileId),
+					e);
+		}
+	}
+
 	public static Long incrementCounterOfChunkIteration(RedisManager redisManager, String fileId)
 			throws MetaloadException {
 		try {
