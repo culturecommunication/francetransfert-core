@@ -17,7 +17,7 @@ public enum EnclosureKeysEnum {
 	UPLOAD_NB_FILES_DONE("upload-nb-files-done"), PUBLIC_LINK("public-link"),
 	PUBLIC_DOWNLOAD_COUNT("public-download-count"), TOKEN("token"), HASH_FILE("hash-file"), LANGUAGE("language"),
 	PASSWORD_ZIP("zip-password"), DELETED("deleted"), EXPIRED_TIMESTAMP_ARCHIVE("expired-timestamp-archive"),
-	STATUS_CODE("status-code"), STATUS_WORD("status-word"), SOURCE("source"), INFOPLI("info-pli");
+	STATUS_CODE("status-code"), STATUS_WORD("status-word"), SOURCE("source"), INFOPLI("info-pli"), ENVOIMDPDEST("envoiMdpDestinataires");
 
 	private String key;
 
