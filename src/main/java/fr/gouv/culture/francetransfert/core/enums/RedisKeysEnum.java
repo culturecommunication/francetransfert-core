@@ -21,7 +21,8 @@ public enum RedisKeysEnum {
 	FT_TOKEN_SENDER("sender:", ":token"), FT_SENDER_PLIS("sender:", ":plis"),
 	FT_DOMAINS_MAILS_MAILS("enclosure-mails:mails", ""), FT_DOMAINS_MAILS_TMP("enclosure-mails:tmp", ""),
 	CHECK_MAIL("check-mail", ""), FT_SEND("send:", ""), FT_RECEIVE("receive:", ""),
-	FT_Download_Date("recipient:", ":dates");
+	FT_Download_Date("recipient:", ":dates"), FT_ENCLOSURE_SCAN("enclosure:", ":scans"),
+	FT_ENCLOSURE_SCAN_DELAY("enclosure:", ":scans-delay");
 
 	private String firstKeyPart;
 	private String lastKeyPart;

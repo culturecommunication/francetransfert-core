@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum RecipientKeysEnum {
-	NB_DL("nb-dl"), PASSWORD_TRY_COUNT("password-try-count"), LAST_PASSWORD_TRY("password-try-timestamp"), LOGIC_DELETE("logic-delete");
+	NB_DL("nb-dl"), PASSWORD_TRY_COUNT("password-try-count"), LAST_PASSWORD_TRY("password-try-timestamp"),
+	LOGIC_DELETE("logic-delete");
 
 	private String key;
 

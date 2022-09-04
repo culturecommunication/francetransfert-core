@@ -26,6 +26,7 @@ import java.util.stream.IntStream;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.redisson.client.RedisTryAgainException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -206,7 +207,7 @@ public class RedisUtils {
 			return Integer.valueOf(redisManager.getHgetString(RedisKeysEnum.FT_RECIPIENT.getKey(recipientId),
 					RecipientKeysEnum.NB_DL.getKey()));
 		} catch (NumberFormatException e) {
-			throw new MetaloadException("value does not exist");
+			return 0;
 		}
 	}
 
@@ -214,21 +215,22 @@ public class RedisUtils {
 			throws MetaloadException {
 		Integer passTry = 0;
 		try {
-			passTry = Integer.valueOf(redisManager.getHgetString(RedisKeysEnum.FT_RECIPIENT.getKey(recipientId),
-					RecipientKeysEnum.PASSWORD_TRY_COUNT.getKey()));
-//			RESET DATE IF TRY AFTER DATE
-//			LocalDate lastTryDate = LocalDate.parse(redisManager.getHgetString(
-//					RedisKeysEnum.FT_RECIPIENT.getKey(recipientId), RecipientKeysEnum.LAST_PASSWORD_TRY.getKey()));
-//
-//			if (lastTryDate != null) {
-//				LocalDateTime now = LocalDate.now().atStartOfDay();
-//				// TODO ADD DELAY ?
-//				// On reset le count de try dans redis
-//				if (lastTryDate.atStartOfDay().isBefore(now)) {
-//					RedisUtils.resetPasswordTryCountPerRecipient(redisManager, recipientId, enclosureId);
-//					return 0;
+			if (StringUtils.isNotBlank(recipientId)) {
+				passTry = Integer.valueOf(redisManager.getHgetString(RedisKeysEnum.FT_RECIPIENT.getKey(recipientId),
+						RecipientKeysEnum.PASSWORD_TRY_COUNT.getKey()));
+//				RESET DATE IF TRY AFTER DATE
+//				LocalDate lastTryDate = LocalDate.parse(redisManager.getHgetString(
+//						RedisKeysEnum.FT_RECIPIENT.getKey(recipientId), RecipientKeysEnum.LAST_PASSWORD_TRY.getKey()));
+//				if (lastTryDate != null) {
+//					LocalDateTime now = LocalDate.now().atStartOfDay();
+//					// TODO ADD DELAY ?
+//					// On reset le count de try dans redis
+//					if (lastTryDate.atStartOfDay().isBefore(now)) {
+//						RedisUtils.resetPasswordTryCountPerRecipient(redisManager, recipientId, enclosureId);
+//						return 0;
+//					}
 //				}
-//			}
+			}
 
 		} catch (NullPointerException | NumberFormatException | DateTimeParseException e) {
 			// Le nombre de try n'existe pas on return 0
@@ -302,8 +304,10 @@ public class RedisUtils {
 	public static void incrementNumberOfPasswordTry(RedisManager redisManager, String recipientId)
 			throws MetaloadException {
 		try {
-			redisManager.hincrBy(RedisKeysEnum.FT_RECIPIENT.getKey(recipientId),
-					RecipientKeysEnum.PASSWORD_TRY_COUNT.getKey(), 1);
+			if (StringUtils.isNotBlank(recipientId)) {
+				redisManager.hincrBy(RedisKeysEnum.FT_RECIPIENT.getKey(recipientId),
+						RecipientKeysEnum.PASSWORD_TRY_COUNT.getKey(), 1);
+			}
 		} catch (Exception e) {
 			throw new MetaloadException(MessageFormat.format(
 					"Echec à l incrémentation d'essai de mot de passe pour le recipient' : {0}", recipientId), e);
@@ -362,6 +366,23 @@ public class RedisUtils {
 		}
 	}
 
+	public static Long getCounterOfChunkIteration(RedisManager redisManager, String fileId) throws MetaloadException {
+		try {
+			String nbChunk = redisManager.getHgetString(RedisKeysEnum.FT_FILE.getKey(fileId),
+					FileKeysEnum.MUL_CHUNKS_ITERATION.getKey());
+			if (StringUtils.isBlank(nbChunk)) {
+				return Long.valueOf("0");
+			} else {
+				return Long.valueOf(nbChunk);
+			}
+		} catch (Exception e) {
+			throw new MetaloadException(
+					MessageFormat.format(
+							"Echec à l incrémentation du compteur des chunk(s) uploader pour ce fichier: {0}", fileId),
+					e);
+		}
+	}
+
 	public static Long incrementCounterOfChunkIteration(RedisManager redisManager, String fileId)
 			throws MetaloadException {
 		try {
@@ -379,6 +400,20 @@ public class RedisUtils {
 			throws MetaloadException {
 		String keyRecipients = RedisKeysEnum.FT_RECIPIENTS.getKey(enclosureId);
 		return redisManager.getHgetString(keyRecipients, mailRecipient);
+	}
+
+	public static boolean checkRecipientMailInEnclosure(RedisManager redisManager, String enclosureId,
+			String mailRecipient) throws MetaloadException {
+		String keyRecipients = RedisKeysEnum.FT_RECIPIENTS.getKey(enclosureId);
+		Map<String, String> recipientMap = redisManager.hmgetAllString(keyRecipients);
+		return recipientMap.containsKey(mailRecipient);
+	}
+
+	public static boolean checkRecipientIdInEnclosure(RedisManager redisManager, String enclosureId, String recipientId)
+			throws MetaloadException {
+		String keyRecipients = RedisKeysEnum.FT_RECIPIENTS.getKey(enclosureId);
+		Map<String, String> recipientMap = redisManager.hmgetAllString(keyRecipients);
+		return recipientMap.containsValue(recipientId);
 	}
 
 	// =============================================================================================================================================================================
