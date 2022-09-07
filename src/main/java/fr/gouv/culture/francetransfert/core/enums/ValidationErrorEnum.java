@@ -57,7 +57,7 @@ public enum ValidationErrorEnum {
 	FT208("numMorceauFichier", "ERR_FT02_008", "Le numéro de morceau du fichier est obligatoire"),
 	FT209("numMorceauFichier", "ERR_FT02_009",
 			"Le numéro de morceau du fichier doit être inférieur ou égal au nombre total de morceaux du fichier"),
-	FT2010("morceauFichier", "ERR_FT02_010", "Le numéro de morceau du fichier doit être un entier supérieur à 0"),
+	FT2010("numMorceauFichier", "ERR_FT02_010", "Le numéro de morceau du fichier doit être un entier supérieur à 0"),
 	FT2011("totalMorceauxFichier", "ERR_FT02_011", "Le nombre total de morceaux du fichier est obligatoire"),
 	FT2012("totalMorceauxFichier", "ERR_FT02_012",
 			"Le nombre total de morceaux du fichier doit être un entier supérieur à 0"),
